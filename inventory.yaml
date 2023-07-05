@@ -1,2 +1,1 @@
-[kubernetes]
-localhost ansible_ssh_port=42006 ansible_ssh_user=root
+
