@@ -1,12 +1,19 @@
-- name : Deploy Pods on Docker Container
-  hosts : kubernetes
+---
+- name: Deploy Kubernetes Deployment and Service
+  hosts: localhost
   tasks : 
-  - name: Remove Existing Container
-    command: "kubectl delete deployment {{ containerName }}"
+  - name: Remove Existing service
+    command: "kubectl delete svc testapp"
+    ignore_errors: true
+  - name: Remove Existing deployment
+    command: "kubectl delete deployment testapp"
     ignore_errors: true
 
   - name: Performing Deployment of {{ dockerImageTag }}
-    command: "kubectl create deployment {{ containerName }} --image=docker.io/{{ dockerImageTag }} --port={{ httpPort }} "
-
+    command: "kubectl create deployment testapp --image=docker.io/kotianrakshith/testapp "
+  - name: Creating service
+    command: "kubectl expose deployment testapp --type=NodePort --port=8989 "
   - name: Get Container List
     command: "kubectl get pods -o wide"
+  - name: Get services List
+    command: "kubectl get svc"
