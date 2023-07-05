@@ -1,20 +1,7 @@
 ---
 - name: Deploy Kubernetes Deployment and Service
   hosts: localhost
-  gather_facts: false
-  
-  tasks:
-    - name: Create Kubernetes Deployment
-      shell: kubectl create deployment testapp --image=docker.io/kotianrakshith/testapp
-      args:
-        executable: /bin/bash
-
-    - name: Create Kubernetes Service
-      shell: kubectl expose deployment testapp --type=NodePort --port=8989
-      args:
-        executable: /bin/bash
-    - name: Get all Kubernetes Service
-      shell: kubectl get svc
-      args:
-        executable: /bin/bash
+  tasks : 
+  - name: Performing Deployment of testapp
+    command: "kubectl apply -f kubewebapp.yaml"
     
