@@ -1,19 +1,20 @@
 ---
 - name: Deploy Kubernetes Deployment and Service
   hosts: localhost
-  tasks : 
-  - name: Remove Existing service
-    command: "kubectl delete svc testapp"
-    ignore_errors: true
-  - name: Remove Existing deployment
-    command: "kubectl delete deployment testapp"
-    ignore_errors: true
+  gather_facts: false
+  
+  tasks:
+    - name: Create Kubernetes Deployment
+      shell: kubectl create deployment testapp --image=docker.io/kotianrakshith/testapp
+      args:
+        executable: /bin/bash
 
-  - name: Performing Deployment of {{ dockerImageTag }}
-    command: "kubectl create deployment testapp --image=docker.io/kotianrakshith/testapp "
-  - name: Creating service
-    command: "kubectl expose deployment testapp --type=NodePort --port=8989 "
-  - name: Get Container List
-    command: "kubectl get pods -o wide"
-  - name: Get services List
-    command: "kubectl get svc"
+    - name: Create Kubernetes Service
+      shell: kubectl expose deployment testapp --type=NodePort --port=8989
+      args:
+        executable: /bin/bash
+    - name: Get all Kubernetes Service
+      shell: kubectl get svc
+      args:
+        executable: /bin/bash
+    
