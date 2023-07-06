@@ -1,48 +1,42 @@
-node{
-    
-    def tag, dockerHubUser, containerName, httpPort = ""
-    
-    stage('Prepare Environment'){
-        echo 'Initialize Environment'
-        tag="3.0"
-	withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'dockerUser', passwordVariable: 'dockerPassword')]) {
-		dockerHubUser="$dockerUser"
-        }
-	containerName="bankingapp"
-	httpPort="8989"
+pipeline{
+    agent any
+    tools{
+        maven 'Maven'
     }
-    
-    stage('Code Checkout'){
-        try{
-            checkout scm
+    stages{
+        stage('Build Maven'){
+            steps{
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/kotianrakshith/CapstoneProject1']])
+                sh 'mvn clean install'
+            }
         }
-        catch(Exception e){
-            echo 'Exception occured in Git Code Checkout Stage'
-            currentBuild.result = "FAILURE"
+        stage('Build Docker Image'){
+            steps{
+                script{
+                    sh 'docker build -t kotianrakshith/orbitbankapp .'
+                }
+            }
+        }
+        stage('Push Docker Image to Dockerhub'){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpassword')]) {
+                    sh 'docker login -u kotianrakshith -p ${dockerhubpassword}'
+
+                    sh 'docker push kotianrakshith/orbitbankapp'
+                    }
+                }
+            }
+        }
+        stage('Execute Ansible Playbook'){
+            steps{
+                withCredentials([kubeconfigContent(credentialsId: 'Kubernetes', variable: 'KUBECONFIG_CONTENT')]) {
+                    sh '''echo "$KUBECONFIG_CONTENT" > kubeconfig '''
+                    sh 'ansible-playbook kubernetesDeploy.yaml'
+                    sh 'rm kubeconfig'
+              
+                }
+            }
         }
     }
-    
-    stage('Maven Build'){
-        sh "mvn clean package"        
-    }
-    
-    stage('Docker Image Build'){
-        echo 'Creating Docker image'
-        sh "docker build -t $dockerHubUser/$containerName:$tag --pull --no-cache ."
-    }  
-	
-    stage('Publishing Image to DockerHub'){
-        echo 'Pushing the docker image to DockerHub'
-        withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'dockerUser', passwordVariable: 'dockerPassword')]) {
-		sh "docker login -u $dockerUser -p $dockerPassword"
-		sh "docker push $dockerUser/$containerName:$tag"
-		echo "Image push complete"
-        } 
-    }    
-	
-	stage('Ansible Playbook Execution'){
-		sh "ansible-playbook -i inventory.yaml kubernetesDeploy.yaml -e httpPort=$httpPort -e containerName=$containerName -e dockerImageTag=$dockerHubUser/$containerName:$tag"
-	}
 }
-
-
