@@ -4,23 +4,23 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: testapp
-  name: testapp
+    app: orbitbankapp
+  name: orbitbankapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: testapp
+      app: orbitbankapp
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: testapp
+        app: orbitbankapp
     spec:
       containers:
-      - image: docker.io/kotianrakshith/testapp
-        name: testapp
+      - image: docker.io/kotianrakshith/orbitbankapp
+        name: orbitbankapp
         resources: {}
 status: {}
 
@@ -30,8 +30,8 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: testapp
-  name: testapp
+    app: orbitbankapp
+  name: orbitbankapp
 spec:
   ports:
   - port: 8989
@@ -39,7 +39,7 @@ spec:
     targetPort: 8989
     nodePort: 32000
   selector:
-    app: testapp
+    app: orbitbankapp
   type: NodePort
 status:
   loadBalancer: {}
