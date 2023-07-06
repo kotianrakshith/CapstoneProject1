@@ -3,5 +3,5 @@
   hosts: localhost
   tasks : 
   - name: Performing Deployment of testapp
-    command: "kubectl apply -f kubewebapp.yaml --kubeconfig=/home/labsuser/.kube/config --context=kubernetes-admin@kubernetes"
+    command: "kubectl apply -f kubewebapp.yaml --kubeconfig=kubeconfig --context=kubernetes-admin@kubernetes"
     
