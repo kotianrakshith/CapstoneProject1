@@ -74,7 +74,7 @@ Jenkins file we will create in later step by testing each step one by one in pip
 
 ## **2. DockerHub Setup**
 
-Regarding Dockerhub, I already have a dockerhub account with id: kotianrakshith
+Regarding Dockerhub, I already have a dockerhub account with id: **kotianrakshith**
 
 ![](/readmeimages/Aspose.Words.1a61bbc6-95dc-4183-8ed2-178bd4c269d3.008.png)
 
@@ -88,7 +88,9 @@ Dockerfile: <https://github.com/kotianrakshith/CapstoneProject1/blob/main/Docker
 
 We have three nodes with us, we will chose the system with jenkins installed as master and other two nodes as node 1 and node 2. We will rename it as master, worker node1 and worker node2:
 
-Master:![](/readmeimages/Aspose.Words.1a61bbc6-95dc-4183-8ed2-178bd4c269d3.009.png)
+Master:
+
+![](/readmeimages/Aspose.Words.1a61bbc6-95dc-4183-8ed2-178bd4c269d3.009.png)
 
 Node1:
 
@@ -311,7 +313,9 @@ stage('Execute Ansible Playbook'){
         }
 ```
 
-We can see that all our test is complete ![](/readmeimages/Aspose.Words.1a61bbc6-95dc-4183-8ed2-178bd4c269d3.035.png)
+We can see that all our test is complete 
+
+![](/readmeimages/Aspose.Words.1a61bbc6-95dc-4183-8ed2-178bd4c269d3.035.png)
 
 And that test app is deployed in kubernets
 
@@ -333,9 +337,7 @@ Kubernets file link: <https://github.com/kotianrakshith/CapstoneProject1/blob/ma
 
 Ansible playbook link: <https://github.com/kotianrakshith/CapstoneProject1/blob/main/kubernetesDeploy.yaml>
 
-Total Github link:
-
-<https://github.com/kotianrakshith/CapstoneProject1>
+Total Github link: <https://github.com/kotianrakshith/CapstoneProject1>
 
 Now we have created Jenkins file we can create our actual project pipeline using the file from Github:
 
@@ -373,13 +375,13 @@ As we can see out app in the kubernets is running and service is also exposed in
 
 As the instruction provided with the source code we will use the below url to check the app:
 
-[http://localhost:<port>/bank-api/swagger-ui.html]
+_http://localhost:<port>/bank-api/swagger-ui.html_
 
 Here as our node port is 32000
 
 We will use the below url to check 
 
-[http://localhost:32000/bank-api/swagger-ui.html][http://localhost:<port>/bank-api/swagger-ui.html]
+<http://localhost:32000/bank-api/swagger-ui.html>
 
 ![](/readmeimages/Aspose.Words.1a61bbc6-95dc-4183-8ed2-178bd4c269d3.044.png)
 
@@ -397,5 +399,3 @@ And we are able to navigate:
 
 So that concludes the project, we can improve on this project by making this an automated build by using poll scm or by using webhooks so it will run whenever there is a build made. But you can also click on build now whenever there is a change done and it should deploy the updated application to the kubernetes.
 
-: https://github.com/kotianrakshith/CapstoneProject1 "https://github.com/kotianrakshith/CapstoneProject1"
-[http://localhost:<port>/bank-api/swagger-ui.html]: http://localhost:<port>/bank-api/swagger-ui.html "http://localhost:<port>/bank-api/swagger-ui.html"
